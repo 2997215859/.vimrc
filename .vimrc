@@ -203,6 +203,7 @@ syntax on
 " 自适应不同语言的智能缩进
 filetype indent on
 
+
 " 将制表符扩展为空格
 set expandtab
 " 设置编辑时制表符占用空格数
@@ -481,10 +482,11 @@ let NERDTreeAutoDeleteBuffer=1
  
 " 显示/隐藏 MiniBufExplorer 窗口
 map <Leader>bl :MBEToggle<cr>
+" 关闭当前 MiniBufExplorer 窗口
 
 " buffer 切换快捷键
-map <C-Tab> :MBEbn<cr>
-map <C-S-Tab> :MBEbp<cr>
+map <c-n> :MBEbn<cr>
+map <c-p> :MBEbp<cr>
 
 " <<
 
@@ -510,8 +512,19 @@ map <leader>rs :source my.vim<cr>
 " <<
  
 " 设置快捷键实现一键编译及运行
-nmap <Leader>m :wa<CR> :cd build/<CR> :!rm -rf main<CR> :!cmake CMakeLists.txt<CR>:make<CR><CR> :cw<CR> :cd ..<CR>
-nmap <Leader>g :wa<CR>:cd build/<CR>:!rm -rf main<CR>:!cmake CMakeLists.txt<CR>:make<CR><CR>:cw<CR>:cd ..<CR>:!build/main<CR>
+" nmap <leader>e :wa<cr>:cd build/<cr> :!rm -rf main<cr> :!cmake ../cmakelists.txt<cr>:make<cr><cr> :cw<cr> :cd ..<cr>
+" nmap <leader>g :wa<cr>:cd build/<cr>:!rm -rf main<cr>:!cmake ../cmakelists.txt<cr>:make<cr><cr>:cw<cr>:cd ..<cr>:!build/main<cr>
+" nmap <leader>g :wa<cr>:!rm -rf main<cr>:!cmake cmakelists<cr>:make<cr><cr>:cw<cr><cr>:!./main<cr>
+"map <silent> <leader>g :wa<cr>:make https<cr><cr><esc><esc>:cw<cr>
+nmap <leader>cw :cw<cr>
+
+" nmap <Leader>g :wa<CR>:!rm -fr main<CR>:wa<CR>:call DoOneCompile()<CR>
+nmap <leader>g :wa<cr>:!rm -rf main<cr>:call DoOneCompile()<cr>
+function DoOneCompile()
+exec "silent !cmake CMakLists.txt"    
+exec "silent make https"
+exec "cw"
+endfunction
 
 " >>
 " 快速选中结对符内的文本
